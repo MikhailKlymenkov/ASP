@@ -54,7 +54,7 @@ namespace Test.Controllers
                     student.Disciplines.Add(_db.Disciplines.Find(i));
                 }
             }            
-            _db.SaveChanges();           
+            _db.SaveChanges();
             return View("Index", _db.Students);
         }
 
