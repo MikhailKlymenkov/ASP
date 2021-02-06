@@ -11,7 +11,7 @@
     {
         <ul>
             <li>
-                <a asp-action="GetDisciplines"> @item.Name</a>
+                <a asp-action="GetDisciplines" asp-route-id="@item.Id"> @item.Name</a>
             </li>            
         </ul>
     }

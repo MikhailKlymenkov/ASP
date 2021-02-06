@@ -27,17 +27,35 @@ namespace Test.Controllers
         {
             return View();
         }
-        public IActionResult GetDisciplines()
+        public IActionResult GetDisciplines(int id)
         {
-            ViewBag.Disciplines = new SelectList(_db.Disciplines, "Id", "Title");
-            return View();
+            var student = _db.Students.Where(x => x.Id == id).First();
+            var disciplinesSelect = new List<bool>();
+            foreach (var disc in _db.Disciplines)
+            {
+                if (student.Disciplines != null && student.Disciplines.Contains(disc))
+                    disciplinesSelect.Add(true);
+                else
+                    disciplinesSelect.Add(false); 
+            }
+            ViewData["DisciplinesSelect"] = disciplinesSelect;
+            ViewData["Disciplines"] = _db.Disciplines.ToList();
+            return View(student) ;
         }
         [HttpPost]
-        public IActionResult GetDisciplines(int id, IEnumerable<Discipline> disciplines)
-        {
-            _db.Students.Find(id).Disciplines = disciplines.ToList();
-            _db.SaveChanges();
-            return View("Index");
+        public IActionResult GetDisciplines(int id, IEnumerable<bool> disciplinesSelect)
+        {            
+            var student = _db.Students.Find(id);
+            student.Disciplines = new();
+            for (int i=0; i < _db.Disciplines.Count(); i++)
+            {
+                if(disciplinesSelect.ElementAt(i))
+                {
+                    student.Disciplines.Add(_db.Disciplines.Find(i));
+                }
+            }            
+            _db.SaveChanges();           
+            return View("Index", _db.Students);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
