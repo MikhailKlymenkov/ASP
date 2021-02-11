@@ -1,0 +1,36 @@
+﻿@using Choice.Helpers
+@model Choice.Models.Student
+
+@{
+    ViewData["Title"] = $"Disciplines of {Model.UserName}";
+}
+<h1>Disciplines of @Model.UserName</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GetDisciplines">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="hidden" asp-for="@Model.Id" />                
+                @for (int i = 0; i < ((List<bool>)ViewData["DisciplinesSelect"]).Count; i++)
+                {
+                    <input type="checkbox" asp-for="@(((List<bool>)ViewData["DisciplinesSelect"])[i])" />
+                    <label asp-for="@(((List<bool>)ViewData["DisciplinesSelect"])[i])">@(((List<Discipline>)ViewData["Disciplines"])[i].Title)</label>              
+                    <br />}
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

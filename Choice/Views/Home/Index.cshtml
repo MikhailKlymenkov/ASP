@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Choice.Models.Student>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @foreach (var item in Model)
+    {
+        <ul>
+            <li>
+                <a asp-action="GetDisciplines" asp-route-id="@item.Id"> @item.UserName</a>
+            </li>            
+        </ul>
+    }
+</div>
